@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaBoxes, FaCheckCircle, FaExclamationTriangle } from 'react-icons/fa';
+import ENV from '../env';
 
 export default function Dashboard() {
   const stats = [

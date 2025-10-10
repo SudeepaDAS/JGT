@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import ENV from '../env';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -16,7 +17,7 @@ export default function Products() {
   const [brands, setBrands] = useState([]);
   const [types, setTypes] = useState([]);
 
-  const API = 'http://localhost:5000/api';
+  const API = ENV.API_URL;
 
   // Fetch tyres
   const fetchTyres = async () => {
