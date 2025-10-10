@@ -1,8 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const { Brand } = require('../models');
+const {
+  getBrands,
+  getBrandname,
+  addBrand,
+  updateBrand,
+  deleteBrand,
+} = require('../controllers/brandController');
 
-router.get('/', async (req, res) => res.json(await Brand.findAll()));
-router.post('/', async (req, res) => res.json(await Brand.create(req.body)));
+// CRUD routes
+router.get('/', getBrands);
+router.get('/:id', getBrandname);
+router.post('/', addBrand);
+router.put('/:id', updateBrand);
+router.delete('/:id', deleteBrand);
+
 
 module.exports = router;

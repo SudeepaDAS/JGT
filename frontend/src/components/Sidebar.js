@@ -1,13 +1,14 @@
 // Sidebar.js
 import { Link, useLocation } from 'react-router-dom';
-import { FaTachometerAlt, FaBox, FaLayerGroup, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaTachometerAlt, FaCubes,FaTags, FaLayerGroup, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 export default function Sidebar({ isCollapsed, setIsCollapsed, mobileOpen, setMobileOpen }) {
   const location = useLocation();
 
   const menuItems = [
-    { name: "Dashboard", icon: <FaTachometerAlt />, path: "/" },
-    { name: "Products", icon: <FaBox />, path: "/products" },
+    { name: "Dashboard", icon: <FaChevronRight />, path: "/" },
+    { name: "Products", icon: <FaChevronRight />, path: "/products" },
+    { name: "Brands", icon: <FaChevronRight />, path: "/brands" },
   ];
 
   return (
