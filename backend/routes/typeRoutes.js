@@ -1,8 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const { Type } = require('../models');
+const {
+  getAllTypes,
+  getTypenameById,
+  addType,
+  updateTypeById,
+  deleteTypeById,
+} = require('../controllers/typeController');
 
-router.get('/', async (req, res) => res.json(await Type.findAll()));
-router.post('/', async (req, res) => res.json(await Type.create(req.body)));
+// CRUD routes
+router.get('/', getAllTypes);
+router.get('/:id', getTypenameById);
+router.post('/', addType);
+router.put('/:id', updateTypeById);
+router.delete('/:id', deleteTypeById);
 
 module.exports = router;

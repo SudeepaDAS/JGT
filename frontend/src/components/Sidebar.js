@@ -9,6 +9,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, mobileOpen, setMo
     { name: "Dashboard", icon: <FaChevronRight />, path: "/" },
     { name: "Products", icon: <FaChevronRight />, path: "/products" },
     { name: "Brands", icon: <FaChevronRight />, path: "/brands" },
+    { name: "Types", icon: <FaChevronRight />, path: "/types" },
   ];
 
   return (

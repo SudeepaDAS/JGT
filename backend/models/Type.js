@@ -13,6 +13,10 @@ const Type = sequelize.define('Type', {
     allowNull: false,
     unique: true,
   },
+  isActive: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true, // active by default
+  },
 }, {
   tableName: 'Types',
   timestamps: true,
