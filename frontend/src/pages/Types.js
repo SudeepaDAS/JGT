@@ -79,11 +79,11 @@ export default function Types() {
     <div className="p-6">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-bettlegreen">Types</h2>
+        <h2 className="text-2xl font-bold text-MidnightBlue">Types</h2>
         <button
           onClick={() => { setShowModal(true); setEditingId(null); setForm({ name: '' }); }}
-          className="text-white bg-green-700 border border-bettlegreen px-5 py-2 rounded-lg shadow-md 
-                    hover:bg-white-700 hover:text-bettlegreen hover:scale-105 transition-all duration-200 font-medium"
+          className="text-white bg-[#162570] border border-MidnightBlue px-5 py-2 rounded-lg shadow-md 
+                    hover:bg-white-700 hover:text-MidnightBlue hover:scale-105 transition-all duration-200 font-medium"
         >
           Add Type
         </button>
@@ -92,7 +92,7 @@ export default function Types() {
       {/* Table Section */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
-          <thead className="bg-bettlegreen text-white uppercase text-sm tracking-wider">
+          <thead className="bg-MidnightBlue text-white uppercase text-sm tracking-wider">
             <tr>
               <th className="px-4 py-3 text-left">#</th>
               <th className="px-4 py-3 text-left">Type Name</th>
@@ -137,7 +137,7 @@ export default function Types() {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="Type Name"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-bettlegreen"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-MidnightBlue"
                 required
               />
               <div className="flex justify-end gap-2 mt-4">
@@ -150,7 +150,7 @@ export default function Types() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-md bg-bettlegreen text-gray-700 hover:bg-green-700"
+                  className="px-4 py-2 rounded-md bg-MidnightBlue text-gray-700 hover:bg-green-700"
                 >
                   {editingId ? 'Update' : 'Add'}
                 </button>
