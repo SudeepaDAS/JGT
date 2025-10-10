@@ -11,4 +11,4 @@ How to run:
 Notes:
 - Uses localStorage for product persistence.
 - No backend included. You can integrate your Node/Mongo backend later by swapping the localStorage calls with API calls.
-- Theme color: Bettlegreen (#49796B)
+- Theme color: MidnightBlue (#49796B)
