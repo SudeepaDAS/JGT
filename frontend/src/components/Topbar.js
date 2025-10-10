@@ -5,10 +5,10 @@ export default function Topbar({ onMobileToggle }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-30 bg-white shadow-sm border-b border-gray-200 flex items-center justify-between px-4 md:px-6 h-16">
+    <header className="sticky top-0 z-30 bg-white shadow-sm border-b border-gray-200 flex items-center justify-between px-4 md:px-6 h-16" style={{height:"80px"}}>
       {/* Mobile Toggle */}
       <div className="flex items-center gap-2 md:hidden">
-        <button onClick={onMobileToggle} className="text-[#49796B] hover:text-[#355f4f]">
+        <button onClick={onMobileToggle} className="text-[#162570] hover:text-[#626fb2]">
           <FaBars size={28} />
         </button>
       </div>
@@ -19,7 +19,7 @@ export default function Topbar({ onMobileToggle }) {
       {/* Right Icons */}
       <div className="flex items-center gap-4 relative">
         {/* Notification */}
-        <button className="relative text-[#49796B] hover:text-[#355f4f]">
+        <button className="relative text-[#162570] hover:text-[#626fb2]">
           <FaBell size={28} />
           {/* Red dot for unread notifications */}
           <span className="absolute top-0 right-0 inline-block w-2 h-2 bg-red-500 rounded-full"></span>
@@ -29,7 +29,7 @@ export default function Topbar({ onMobileToggle }) {
         <div className="relative">
           <button
             onClick={() => setOpen(!open)}
-            className="flex items-center text-[#49796B] hover:text-[#355f4f]"
+            className="flex items-center text-[#162570] hover:text-[#626fb2]"
           >
             <FaUserCircle size={28} />
           </button>

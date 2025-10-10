@@ -77,11 +77,11 @@ export default function Brands() {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-bettlegreen">Brands</h2>
+        <h2 className="text-2xl font-bold text-MidnightBlue">Brands</h2>
         <button
           onClick={() => { setShowModal(true); setEditingId(null); setForm({ name: '' }); }}
-          className="text-white bg-[#49796B] border border-bettlegreen px-5 py-2 rounded-lg shadow-md 
-                    hover:bg-white-700 hover:text-bettlegreen hover:scale-105 transition-all duration-200 font-medium"
+          className="text-white bg-[#162570] border border-MidnightBlue px-5 py-2 rounded-lg shadow-md 
+                    hover:bg-white-700 hover:text-MidnightBlue hover:scale-105 transition-all duration-200 font-medium"
         >
           Add Brand
         </button>
@@ -89,7 +89,7 @@ export default function Brands() {
 
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
-          <thead className="bg-bettlegreen text-white uppercase text-sm tracking-wider">
+          <thead className="bg-MidnightBlue text-white uppercase text-sm tracking-wider">
             <tr>
               <th className="px-4 py-3 text-left">#</th>
               <th className="px-4 py-3 text-left">Brand Name</th>
@@ -134,7 +134,7 @@ export default function Brands() {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="Brand Name"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-bettlegreen"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-MidnightBlue"
                 required
               />
               <div className="flex justify-end gap-2 mt-4">
@@ -147,7 +147,7 @@ export default function Brands() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-md bg-bettlegreen text-gray-700 hover:bg-green-700"
+                  className="px-4 py-2 rounded-md bg-MidnightBlue text-gray-700 hover:bg-green-700"
                 >
                   {editingId ? 'Update' : 'Add'}
                 </button>
