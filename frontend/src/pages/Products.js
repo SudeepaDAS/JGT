@@ -110,8 +110,8 @@ export default function Products() {
         <h2 className="text-2xl font-bold text-bettlegreen mb-3 md:mb-0">Products</h2>
         <button
           onClick={() => setShowModal(true)}
-          className="text-bettlegreen bg-white border border-bettlegreen px-5 py-2 rounded-lg shadow-md 
-                    hover:bg-green-700 hover:text-white hover:scale-105 transition-all duration-200 font-medium"
+          className="text-white bg-[#49796B] border border-bettlegreen px-5 py-2 rounded-lg shadow-md 
+                    hover:bg-white-700 hover:text-bettlegreen hover:scale-105 transition-all duration-200 font-medium"
         >
           Add Product
         </button>

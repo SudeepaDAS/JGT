@@ -80,7 +80,7 @@ export default function Brands() {
         <h2 className="text-2xl font-bold text-bettlegreen">Brands</h2>
         <button
           onClick={() => { setShowModal(true); setEditingId(null); setForm({ name: '' }); }}
-          className="text-white bg-green-700 border border-bettlegreen px-5 py-2 rounded-lg shadow-md 
+          className="text-white bg-[#49796B] border border-bettlegreen px-5 py-2 rounded-lg shadow-md 
                     hover:bg-white-700 hover:text-bettlegreen hover:scale-105 transition-all duration-200 font-medium"
         >
           Add Brand

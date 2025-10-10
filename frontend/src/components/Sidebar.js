@@ -1,30 +1,31 @@
 // Sidebar.js
 import { Link, useLocation } from 'react-router-dom';
 import { FaTachometerAlt, FaCubes,FaTags, FaLayerGroup, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import Logo from '../uploads/logo/logo-dark.png';
+import ShortLogo from '../uploads/logo/short.png';
 
 export default function Sidebar({ isCollapsed, setIsCollapsed, mobileOpen, setMobileOpen }) {
   const location = useLocation();
 
   const menuItems = [
-    { name: "Dashboard", icon: <FaChevronRight />, path: "/" },
-    { name: "Products", icon: <FaChevronRight />, path: "/products" },
-    { name: "Brands", icon: <FaChevronRight />, path: "/brands" },
+    { name: "Dashboard", icon: <FaTachometerAlt />, path: "/" },
+    { name: "Products", icon: <FaCubes />, path: "/products" },
+    { name: "Brands", icon: <FaLayerGroup />, path: "/brands" },
   ];
 
   return (
     <>
       {/* Desktop Sidebar */}
       <aside className={`hidden md:flex fixed top-0 left-0 h-screen bg-[#49796B] text-white flex-col transition-all duration-300 z-40 ${isCollapsed ? "w-20" : "w-60"}`}>
-        <div className="h-16 flex items-center px-4 shadow-sm border-b border-gray-200 relative">
-          {!isCollapsed && <div className="flex-1 flex justify-center">
-            {/* <img src="/logo.png" alt="Logo" className="h-12 w-auto" /> */}
-            <h1>JG Tyres</h1>
+        <div className="h-16 flex items-center px-4 shadow-sm border-b border-gray-200 relative" onClick={() => setIsCollapsed(!isCollapsed)}>
+          {!isCollapsed && <div className="flex-1 flex justify-left">
+            <img src={Logo} alt="JAY GURU TYRE" className="logo" style={{height:"70px", margin:"4px 0 0 0"}}/>
+            {/* <h1>JG Tyres</h1> */}
             </div>}
           <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
             className={`transition-all duration-300 ${isCollapsed ? "mx-auto block" : "absolute right-4"}`}
           >
-            {isCollapsed ? <FaChevronRight size={24} /> : <FaChevronLeft size={24} />}
+            {isCollapsed ? <img src={ShortLogo} alt="JGT" className="logo" style={{height:"50px"}}/>: <span></span>}
           </button>
         </div>
 
