@@ -1,0 +1,16 @@
+/* src/index.css or src/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: you can add tiny global styles if needed */
+body {
+  @apply bg-gray-50 font-sans;
+}
+th {
+    text-align: left;
+    font-weight: 700;
+    color: #162570;
+    text-transform: uppercase;
+    font-size: 16px;
+}

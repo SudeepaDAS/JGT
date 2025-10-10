@@ -1,0 +1,69 @@
+# ----------------------------
+# Global Node stuff
+# ----------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ----------------------------
+# Build outputs
+# ----------------------------
+dist/
+build/
+coverage/
+out/
+.next/
+
+# ----------------------------
+# Environment files
+# ----------------------------
+.env
+.env.*
+!.env.example
+
+# ----------------------------
+# Database / Logs
+# ----------------------------
+*.log
+*.sqlite3
+*.db
+pgdata/
+dump.sql
+
+# ----------------------------
+# Editor / System files
+# ----------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.njsproj
+*.sw?
+*.code-workspace
+
+# ----------------------------
+# TypeScript
+# ----------------------------
+*.tsbuildinfo
+
+# ----------------------------
+# Docker / PM2 (optional)
+# ----------------------------
+pids/
+*.pid
+*.seed
+*.pid.lock
+.docker/
+docker-compose.override.yml
+Dockerfile.dev
+
+# ----------------------------
+# Ignore build/node_modules from both frontend & backend
+# ----------------------------
+frontend/node_modules/
+frontend/build/
+backend/node_modules/
