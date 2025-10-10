@@ -1,52 +1,45 @@
 const { Tyre, Brand, Type } = require('../models');
 
+// ✅ Get all active tyres
 exports.getTyres = async (req, res) => {
   try {
     const tyres = await Tyre.findAll({
+      where: { isActive: true }, // ✅ Only active tyres
       include: [
         { model: Brand, attributes: ['name'] },
-        { model: Type, attributes: ['name'] }
+        { model: Type, attributes: ['name'] },
       ],
     });
     res.json(tyres);
   } catch (error) {
+    console.error('Get Tyres error:', error);
     res.status(500).json({ message: 'Server error', error });
   }
 };
 
+// ✅ Add tyre
 exports.addTyre = async (req, res) => {
   try {
-    const { tyre_number, brandId, typeId, model, size, quantity, price } = req.body;
-    const tyre = await Tyre.create({ tyre_number, brandId, typeId, model, size, quantity, price });
+    const { tyre_number, brandId, typeId, model, size, quantity, price, tubeless } = req.body;
+    const tyre = await Tyre.create({ tyre_number, brandId, typeId, model, size, quantity, price, tubeless });
     res.status(201).json(tyre);
   } catch (error) {
+    console.error('Add Tyre error:', error);
     res.status(400).json({ message: 'Error adding tyre', error });
   }
 };
 
-// @desc Update tyre
+// ✅ Update tyre
 exports.updateTyre = async (req, res) => {
   try {
     const { id } = req.params;
-    const { tyre_number, brandId, typeId, model, size, quantity, price } = req.body;
+    const { tyre_number, brandId, typeId, model, size, quantity, price, tubeless } = req.body;
 
     const tyre = await Tyre.findByPk(id);
-    if (!tyre) {
-      return res.status(404).json({ message: 'Tyre not found' });
-    }
+    if (!tyre) return res.status(404).json({ message: 'Tyre not found' });
 
-    // Explicitly update only known fields (avoids accidental overwrites)
-    await tyre.update({
-      tyre_number,
-      brandId,
-      typeId,
-      model,
-      size,
-      quantity,
-      price
-    });
+    await tyre.update({ tyre_number, brandId, typeId, model, size, quantity, price, tubeless });
 
-    // Re-fetch with associations (optional)
     const updatedTyre = await Tyre.findByPk(id, {
       include: [
         { model: Brand, attributes: ['name'] },
@@ -61,33 +54,33 @@ exports.updateTyre = async (req, res) => {
   }
 };
 
-// @desc Delete tyre
+// ✅ Soft Delete (Deactivate tyre)
 exports.deleteTyre = async (req, res) => {
   try {
     const { id } = req.params;
     const tyre = await Tyre.findByPk(id);
 
-    if (!tyre) {
-      return res.status(404).json({ message: 'Tyre not found' });
-    }
+    if (!tyre) return res.status(404).json({ message: 'Tyre not found' });
 
-    await tyre.destroy();
-    res.json({ message: 'Tyre deleted successfully' });
+    tyre.isActive = false; // ✅ deactivate instead of delete
+    await tyre.save();
+
+    res.json({ message: 'Tyre deactivated successfully (isActive set to false)' });
   } catch (error) {
     console.error('Delete error:', error);
-    res.status(500).json({ message: 'Error deleting tyre', error: error.message });
+    res.status(500).json({ message: 'Error deactivating tyre', error: error.message });
   }
 };
 
-// Get all tubeless tyres
+// ✅ Get only active tubeless tyres
 exports.getTubelessTyres = async (req, res) => {
   try {
     const tyres = await Tyre.findAll({
-      where: { tubeless: true },
+      where: { tubeless: true, isActive: true }, // ✅ only active
       include: [
         { model: Brand, attributes: ['name'] },
-        { model: Type, attributes: ['name'] }
-      ]
+        { model: Type, attributes: ['name'] },
+      ],
     });
     res.json(tyres);
   } catch (error) {
@@ -95,15 +88,15 @@ exports.getTubelessTyres = async (req, res) => {
   }
 };
 
-// Get all tube tyres
+// ✅ Get only active tube tyres
 exports.getTubeTyres = async (req, res) => {
   try {
     const tyres = await Tyre.findAll({
-      where: { tubeless: false },
+      where: { tubeless: false, isActive: true }, // ✅ only active
       include: [
         { model: Brand, attributes: ['name'] },
-        { model: Type, attributes: ['name'] }
-      ]
+        { model: Type, attributes: ['name'] },
+      ],
     });
     res.json(tyres);
   } catch (error) {

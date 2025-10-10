@@ -46,6 +46,10 @@ const Tyre = sequelize.define('Tyre', {
     allowNull: false,
     defaultValue: true, // default to tubeless
   },
+  isActive: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true, // active by default
+  },
 }, {
   tableName: 'Tyres',
   timestamps: true,
