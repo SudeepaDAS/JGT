@@ -147,7 +147,8 @@ export default function Brands() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-md bg-MidnightBlue text-gray-700 hover:bg-green-700"
+                  className="text-white bg-[#162570] border border-MidnightBlue px-5 py-2 rounded-lg shadow-md 
+                    hover:bg-white-700 hover:text-MidnightBlue hover:scale-105 transition-all duration-200 font-medium px-4 py-2 rounded"
                 >
                   {editingId ? 'Update' : 'Add'}
                 </button>

@@ -8,6 +8,7 @@ const { errorHandler } = require('./middleware/errorMiddleware');
 const tyreRoutes = require('./routes/tyreRoutes');
 const brandRoutes = require('./routes/brandRoutes');
 const typeRoutes = require('./routes/typeRoutes');
+const salesOrderRoutes = require('./routes/salesorderRoute');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use('/api/tyres', tyreRoutes);
 app.use('/api/brands', brandRoutes);
 app.use('/api/types', typeRoutes);
+app.use('/api/salesorders', salesOrderRoutes);
 
 // Error Middleware
 app.use(errorHandler);

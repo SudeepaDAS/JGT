@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Products from './pages/Products';
 import Brands from './pages/Brands';
 import Types from './pages/Types';
+import SalesOrders from './pages/SalesOrders';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path='products' element={<Products />} />
         <Route path='brands' element={<Brands />} />
         <Route path='types' element={<Types />} />
+        <Route path='salesorders' element={<SalesOrders />} />
       </Route>
     </Routes>
   );
