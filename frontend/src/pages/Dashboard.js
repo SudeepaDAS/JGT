@@ -82,11 +82,11 @@ export default function Dashboard() {
   ];
 
   const productData = [
-    { id: 1, name: "Home Decore Range", popularity: 99, sales: "99%" },
-    { id: 2, name: "Disney Princess Dress", popularity: 82, sales: "82%" },
-    { id: 3, name: "Bathroom Essentials", popularity: 75, sales: "75%" },
-    { id: 4, name: "Jeans", popularity: 72, sales: "72%" },
-    { id: 5, name: "Kurta wear", popularity: 69, sales: "69%" },
+    { id: 1, name: "Apollo", popularity: 99, sales: "99%" },
+    { id: 2, name: "MRF", popularity: 82, sales: "82%" },
+    { id: 3, name: "Ceat", popularity: 75, sales: "75%" },
+    { id: 4, name: "JK Tyres", popularity: 72, sales: "72%" },
+    { id: 5, name: "Bridgestone", popularity: 69, sales: "69%" },
   ];
 
   const orderList = [
