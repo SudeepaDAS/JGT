@@ -161,7 +161,7 @@ export default function Dashboard() {
         </div>
 
         {/* Right - Total Products Table */}
-        <div className="bg-white p-2 rounded-xl shadow-lg flex flex-col justify-between min-h-[300px]">
+        <div className="bg-white p-2 rounded-xl shadow-lg flex flex-col justify-between min-h-[320px]">
           <div>
             <div className="flex justify-between items-center mb-3">
       <h3 className="text-md font-bold">All Brands</h3>
@@ -175,7 +175,7 @@ export default function Dashboard() {
             <table className="w-full text-sm">
               <thead className="text-gray-500 border-b">
                 <tr>
-                  <th className="py-2 text-left">#</th>
+                  <th className="py-2 px-2 text-left">#</th>
                   <th className="text-left">Brand Name</th>
                   <th className="text-left">Popularity</th>
                   <th className="text-left">Sales</th>
@@ -183,8 +183,8 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {displayedBrands.map((p) => (
-                  <tr key={p.id} className="border-b last:border-none">
-                    <td className="py-2">{p.id}</td>
+                  <tr key={p.id} className="border-b">
+                    <td className="py-2 px-2">{p.id}</td>
                     <td>{p.name}</td>
                     <td>
                       <div className="w-full bg-gray-200 rounded-full h-2.5">
@@ -194,7 +194,7 @@ export default function Dashboard() {
                         ></div>
                       </div>
                     </td>
-                    <td>10</td>
+                    <td className='px-4'>10</td>
                   </tr>
                 ))}
               </tbody>
@@ -297,7 +297,7 @@ export default function Dashboard() {
       </Link>
     </div>
         <table className="min-w-full bg-white rounded-xl overflow-hidden">
-          <thead className="bg-MidnightBlue text-white uppercase text-sm tracking-wider">
+          <thead className="bg-gray-100 text-white uppercase text-sm tracking-wider">
             <tr>
               <th className="px-4 py-3 text-left">Tyre Number</th>
               <th className="px-4 py-3 text-left">Brand</th>

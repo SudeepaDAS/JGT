@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import axios from 'axios';
 import ENV from '../env';
 
@@ -82,17 +82,17 @@ export default function Types() {
         <h2 className="text-2xl font-bold text-MidnightBlue">Types</h2>
         <button
           onClick={() => { setShowModal(true); setEditingId(null); setForm({ name: '' }); }}
-          className="text-white bg-[#162570] border border-MidnightBlue px-5 py-2 rounded-lg shadow-md 
-                    hover:bg-white-700 hover:text-MidnightBlue hover:scale-105 transition-all duration-200 font-medium"
+          className="flex items-center gap-2 text-white bg-[#162570] border border-MidnightBlue px-5 py-2 rounded-lg shadow-md 
+                    hover:bg-white-700 hover:text-MidnightBlue hover:scale-105 transition-all duration-200 font-medium px-4 py-2 rounded shadow"
         >
-          Add Type
+         <FaPlus /> Add Type
         </button>
       </div>
 
       {/* Table Section */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
-          <thead className="bg-MidnightBlue text-white uppercase text-sm tracking-wider">
+          <thead className="bg-gray-100 text-white uppercase text-sm tracking-wider">
             <tr>
               <th className="px-4 py-3 border border-gray-300 text-left">#</th>
               <th className="px-4 py-3 border border-gray-300 text-left">Type Name</th>
@@ -150,7 +150,8 @@ export default function Types() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-md bg-MidnightBlue text-gray-700 hover:bg-green-700"
+                  className="text-white bg-[#162570] border border-MidnightBlue px-5 py-2 rounded-lg shadow-md 
+                    hover:bg-white-700 hover:text-MidnightBlue hover:scale-105 transition-all duration-200 font-medium px-4 py-2 rounded"
                 >
                   {editingId ? 'Update' : 'Add'}
                 </button>
