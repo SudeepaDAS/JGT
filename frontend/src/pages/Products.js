@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { FaMinus, FaTrash } from 'react-icons/fa';
 import axios from 'axios';
 import ENV from '../env';
 
@@ -105,7 +106,7 @@ export default function Products() {
   };
 
   return (
-    <div className="p-6">
+    <div>
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-MidnightBlue mb-3 md:mb-0">Products</h2>
         <button
@@ -122,13 +123,13 @@ export default function Products() {
         <table className="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
           <thead className="bg-MidnightBlue text-white uppercase text-sm tracking-wider">
             <tr>
-              <th className="px-4 py-3 text-left">Tyre Number</th>
-              <th className="px-4 py-3 text-left">Brand</th>
-              <th className="px-4 py-3 text-left">Type</th>
-              <th className="px-4 py-3 text-left">Price</th>
-              <th className="px-4 py-3 text-left">Stock</th>
-              <th className="px-4 py-3 text-left">Tubeless</th>
-              <th className="px-4 py-3 text-left">Actions</th>
+              <th className="px-4 py-3 border border-gray-300 text-left">Tyre Number</th>
+              <th className="px-4 py-3 border border-gray-300 text-left">Brand</th>
+              <th className="px-4 py-3 border border-gray-300 text-left">Type</th>
+              <th className="px-4 py-3 border border-gray-300 text-left">Price</th>
+              <th className="px-4 py-3 border border-gray-300 text-left">Stock</th>
+              <th className="px-4 py-3 border border-gray-300 text-left">Tubeless</th>
+              <th className="px-4 py-3 border border-gray-300 text-left">Actions</th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
@@ -139,24 +140,24 @@ export default function Products() {
                   idx % 2 === 0 ? 'bg-gray-50' : ''
                 }`}
               >
-                <td className="px-4 py-3 font-medium">{p.tyre_number}</td>
-                <td className="px-4 py-3">{p.Brand?.name}</td>
-                <td className="px-4 py-3">{p.Type?.name}</td>
-                <td className="px-4 py-3 text-green-600 font-semibold">₹{p.price}</td>
-                <td className="px-4 py-3 font-medium">{p.quantity}</td>
-                <td className="px-4 py-3">{p.tubeless ? 'Yes' : 'No'}</td>
-                <td className="px-4 py-3 flex gap-2">
+                <td className="px-4 py-3 border border-gray-300 font-medium">{p.tyre_number}</td>
+                <td className="px-4 py-3 border border-gray-300">{p.Brand?.name}</td>
+                <td className="px-4 py-3 border border-gray-300">{p.Type?.name}</td>
+                <td className="px-4 py-3 border border-gray-300 text-green-600 font-semibold">₹{p.price}</td>
+                <td className="px-4 py-3 border border-gray-300 font-medium">{p.quantity}</td>
+                <td className="px-4 py-3 border border-gray-300">{p.tubeless ? 'Yes' : 'No'}</td>
+                <td className="px-4 py-3 border border-gray-300">
                   <button
                     onClick={() => handleReduceStock(p)}
-                    className="bg-yellow-400 text-white px-3 py-1 rounded-md hover:bg-yellow-500 text-sm transition"
+                    className="bg-yellow-400 text-white px-3 py-1 mx-1 rounded-md hover:bg-yellow-500 text-sm transition"
                   >
-                    Reduce
+                    <FaMinus/>
                   </button>
                   <button
                     onClick={() => handleDelete(p.id)}
                     className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 text-sm transition"
                   >
-                    Delete
+                    <FaTrash/>
                   </button>
                 </td>
               </tr>

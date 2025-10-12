@@ -75,7 +75,7 @@ export default function Brands() {
   };
 
   return (
-    <div className="p-6">
+    <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-MidnightBlue">Brands</h2>
         <button
@@ -91,20 +91,20 @@ export default function Brands() {
         <table className="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
           <thead className="bg-MidnightBlue text-white uppercase text-sm tracking-wider">
             <tr>
-              <th className="px-4 py-3 text-left">#</th>
-              <th className="px-4 py-3 text-left">Brand Name</th>
-              <th className="px-4 py-3 text-left">Actions</th>
+              <th className="px-4 py-3 border border-gray-300 text-left">#</th>
+              <th className="px-4 py-3 border border-gray-300 text-left">Brand Name</th>
+              <th className="px-4 py-3 border border-gray-300 text-left">Actions</th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
             {brands.map((brand, idx) => (
               <tr key={brand.id} className={`transition hover:bg-gray-100 ${idx % 2 === 0 ? 'bg-gray-50' : ''}`}>
-                <td className="px-4 py-3 font-medium">{idx + 1}</td>
-                <td className="px-4 py-3">{brand.name}</td>
-                <td className="px-4 py-3 flex gap-2">
+                <td className="px-4 py-3 border border-gray-300 font-medium">{idx + 1}</td>
+                <td className="px-4 py-3 border border-gray-300">{brand.name}</td>
+                <td className="px-4 py-3 border border-gray-300">
                   <button
                     onClick={() => getBrandName(brand.id)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 text-sm transition"
+                    className="bg-blue-500 text-white px-3 py-1 mx-1 rounded-md hover:bg-blue-600 text-sm transition"
                   >
                     <FaEdit />
                   </button>
