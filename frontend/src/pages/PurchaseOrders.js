@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaPlus, FaTrash, FaEdit } from "react-icons/fa";
+import { FaPlus, FaTrash, FaEdit, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import ENV from "../env";
 
 const API = ENV.API_URL;
@@ -8,8 +8,18 @@ const API = ENV.API_URL;
 export default function PurchaseOrders() {
   const [orders, setOrders] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [types, setTypes] = useState([]);
   const [tyres, setTyres] = useState([]);
-  const [types, setTypes] = useState([]);  // <-- New state for types
+  const [expandedRow, setExpandedRow] = useState(null);
+  const [editing, setEditing] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const [filters, setFilters] = useState({
+    search: "",
+    brand: "",
+    status: "",
+  });
+
   const [form, setForm] = useState({
     id: "",
     brand_id: "",
@@ -17,16 +27,13 @@ export default function PurchaseOrders() {
     status: "Pending",
     items: [],
   });
-  const [showModal, setShowModal] = useState(false);
-  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     fetchOrders();
     fetchBrands();
-    fetchTypes(); // Fetch types on mount
+    fetchTypes();
   }, []);
 
-  // Fetch all purchase orders
   const fetchOrders = async () => {
     try {
       const res = await axios.get(`${API}/purchaseorders`);
@@ -36,20 +43,18 @@ export default function PurchaseOrders() {
     }
   };
 
-  // Fetch brands
   const fetchBrands = async () => {
     try {
       const res = await axios.get(`${API}/brands`);
       setBrands(res.data || []);
     } catch (err) {
-      console.error(err);
+      console.error("Failed to fetch brands:", err);
     }
   };
 
-  // Fetch types
   const fetchTypes = async () => {
     try {
-      const res = await axios.get(`${API}/types`); // Make sure you have this API endpoint
+      const res = await axios.get(`${API}/types`);
       setTypes(res.data || []);
     } catch (err) {
       console.error("Failed to fetch types:", err);
@@ -57,7 +62,6 @@ export default function PurchaseOrders() {
     }
   };
 
-  // Fetch tyres for selected brand
   const fetchTyres = async (brandId) => {
     if (!brandId) return setTyres([]);
     try {
@@ -69,14 +73,12 @@ export default function PurchaseOrders() {
     }
   };
 
-  // Handle brand selection
   const handleBrandChange = (e) => {
     const brandId = e.target.value;
     setForm({ ...form, brand_id: brandId, items: [] });
     fetchTyres(brandId);
   };
 
-  // Add new item row
   const handleAddItem = () => {
     setForm({
       ...form,
@@ -87,45 +89,40 @@ export default function PurchaseOrders() {
     });
   };
 
-  // Update item field
   const handleItemChange = (index, field, value) => {
     const items = [...form.items];
-    if (field === "qty" || field === "price" || field === "typeId") {
+    if (["qty", "price", "typeId"].includes(field)) {
       value = Number(value);
     }
     items[index][field] = value;
     setForm({ ...form, items });
   };
 
-  // Remove item row
   const handleRemoveItem = (index) => {
     const items = form.items.filter((_, i) => i !== index);
     setForm({ ...form, items });
   };
 
-  // Reset form
   const resetForm = () => {
     setForm({ id: "", brand_id: "", order_number: "", status: "Pending", items: [] });
     setEditing(false);
   };
 
-  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!form.brand_id || !form.order_number || form.items.length === 0) {
-      alert("Fill brand, order number and at least one item");
+      alert("Please fill all fields and add at least one item.");
       return;
     }
 
-    // Ensure all items have tyre name and typeId
     for (let i of form.items) {
       if (!i.tyre_name) {
-        alert("All items must have a Tyre selected or entered");
+        alert("Each item must have a tyre name.");
         return;
       }
       if (!i.typeId || i.typeId === 0) {
-        alert("All items must have a valid Type selected");
+        alert("Each item must have a valid type.");
         return;
       }
     }
@@ -159,7 +156,6 @@ export default function PurchaseOrders() {
     }
   };
 
-  // Edit existing order
   const handleEdit = (order) => {
     setForm({
       id: order.id,
@@ -181,7 +177,6 @@ export default function PurchaseOrders() {
     fetchTyres(order.brand_id);
   };
 
-  // Delete order
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure?")) return;
     try {
@@ -193,52 +188,145 @@ export default function PurchaseOrders() {
     }
   };
 
+  const filteredOrders = orders.filter((o) => {
+    const matchSearch = o.order_number.toLowerCase().includes(filters.search.toLowerCase());
+    const matchBrand = filters.brand ? o.brand_id === Number(filters.brand) : true;
+    const matchStatus = filters.status ? o.status === filters.status : true;
+    return matchSearch && matchBrand && matchStatus;
+  });
+
+  const getOrderTotal = (order) =>
+    order.PurchaseOrderItems?.reduce(
+      (sum, i) => sum + Number(i.price || 0) * Number(i.quantity || 0),
+      0
+    ) || 0;
+
   return (
     <div className="p-6">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-semibold">Purchase Orders</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-semibold text-[#162570]">Purchase Orders</h2>
         <button
           onClick={() => {
             resetForm();
             setShowModal(true);
           }}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center"
+          className="bg-[#162570] text-white px-5 py-2 rounded-lg shadow hover:scale-105 transition-all"
         >
-          <FaPlus className="mr-2" /> New PO
+          <FaPlus className="inline mr-2" /> New PO
         </button>
+      </div>
+
+      {/* Filters */}
+      <div className="grid grid-cols-3 gap-3 mb-5">
+        <input
+          type="text"
+          placeholder="Search Order Number"
+          value={filters.search}
+          onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+          className="border px-3 py-2 rounded"
+        />
+        <select
+          value={filters.brand}
+          onChange={(e) => setFilters({ ...filters, brand: e.target.value })}
+          className="border px-3 py-2 rounded"
+        >
+          <option value="">All Brands</option>
+          {brands.map((b) => (
+            <option key={b.id} value={b.id}>{b.name}</option>
+          ))}
+        </select>
+        <select
+          value={filters.status}
+          onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+          className="border px-3 py-2 rounded"
+        >
+          <option value="">All Status</option>
+          <option value="Pending">Pending</option>
+          <option value="Completed">Completed</option>
+        </select>
       </div>
 
       {/* Orders Table */}
       <table className="w-full border-collapse border">
-        <thead className="bg-gray-200">
+        <thead className="bg-gray-100 text-gray-700">
           <tr>
-            <th className="border px-3 py-2">ID</th>
-            <th className="border px-3 py-2">Brand</th>
-            <th className="border px-3 py-2">Order Number</th>
-            <th className="border px-3 py-2">Status</th>
-            <th className="border px-3 py-2">Items</th>
-            <th className="border px-3 py-2">Actions</th>
+            <th className="border px-3 py-2 text-left">Order #</th>
+            <th className="border px-3 py-2 text-left">Brand</th>
+            <th className="border px-3 py-2 text-center">Status</th>
+            <th className="border px-3 py-2 text-right">Total ₹</th>
+            <th className="border px-3 py-2 text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {orders.map((o) => (
-            <tr key={o.id}>
-              <td className="border px-3 py-2 text-center">{o.id}</td>
-              <td className="border px-3 py-2">{o.Brand?.name || "—"}</td>
-              <td className="border px-3 py-2">{o.order_number}</td>
-              <td className="border px-3 py-2 text-center">{o.status}</td>
-              <td className="border px-3 py-2">
-                {o.PurchaseOrderItems.map((i) => `${i.Tyre?.tyre_number || "-"} (${i.quantity})`).join(", ")}
-              </td>
-              <td className="border px-3 py-2 text-center">
-                <button onClick={() => handleEdit(o)} className="text-blue-500 mr-3"><FaEdit /></button>
-                <button onClick={() => handleDelete(o.id)} className="text-red-500"><FaTrash /></button>
-              </td>
-            </tr>
-          ))}
-          {orders.length === 0 && (
+          {filteredOrders.map((o) => {
+            const isExpanded = expandedRow === o.id;
+            const total = getOrderTotal(o);
+
+            return (
+              <React.Fragment key={o.id}>
+                <tr className="hover:bg-gray-50 transition">
+                  <td className="border px-3 py-2">{o.order_number}</td>
+                  <td className="border px-3 py-2">{o.Brand?.name || "—"}</td>
+                  <td className="border px-3 py-2 text-center">{o.status}</td>
+                  <td className="border px-3 py-2 text-right">₹{total.toFixed(2)}</td>
+                  <td className="border px-3 py-2 text-center space-x-3">
+                    <button
+                      onClick={() => setExpandedRow(isExpanded ? null : o.id)}
+                      className="text-gray-600 hover:text-blue-600"
+                    >
+                      {isExpanded ? <FaChevronUp /> : <FaChevronDown />}
+                    </button>
+                    <button onClick={() => handleEdit(o)} className="text-blue-500 hover:text-blue-700">
+                      <FaEdit />
+                    </button>
+                    <button onClick={() => handleDelete(o.id)} className="text-red-500 hover:text-red-700">
+                      <FaTrash />
+                    </button>
+                  </td>
+                </tr>
+
+               {expandedRow === o.id && (
+                <tr className="bg-gray-50">
+                  <td colSpan="6" className="p-2">
+                    <div className="space-y-1">
+                      {o.PurchaseOrderItems.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex justify-between items-center bg-blue-50 text-blue-900 p-2 rounded-lg shadow-sm border"
+                        >
+                          <p className="w-1/5 font-semibold">
+                            {item.Tyre?.tyre_number || item.tyre_name || "—"}
+                          </p>
+                          <p className="w-1/5 text-center font-semibold">
+                            Type:{" "}
+                            {item.Tyre?.Type?.name ||
+                              types.find((t) => t.id === item.Tyre?.typeId)?.name ||
+                              "—"}
+                          </p>
+                          <p className="w-1/5 text-center font-semibold">
+                            Qty: {item.quantity}
+                          </p>
+                          <p className="w-1/5 text-right">
+                            Import Price: ₹{Number(item.price || 0).toFixed(2)}
+                          </p>
+                          <p className="w-1/5 text-right font-bold">
+                            Tubeless: {item.Tyre?.tubeless ? "Yes" : "No"}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </td>
+                </tr>
+              )}
+              </React.Fragment>
+            );
+          })}
+
+          {filteredOrders.length === 0 && (
             <tr>
-              <td colSpan="6" className="text-center p-4">No orders found</td>
+              <td colSpan="5" className="text-center p-4 text-gray-500">
+                No purchase orders found
+              </td>
             </tr>
           )}
         </tbody>
@@ -246,18 +334,17 @@ export default function PurchaseOrders() {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-md w-[700px] max-h-[90vh] overflow-y-auto">
-            <h3 className="text-xl font-semibold mb-4">
-              {editing ? "Edit Purchase Order" : "Create Purchase Order"}
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg w-[800px] max-h-[90vh] overflow-y-auto shadow-lg">
+            <h3 className="text-xl font-semibold mb-4 text-[#162570]">
+              {editing ? "Edit Purchase Order" : "New Purchase Order"}
             </h3>
             <form onSubmit={handleSubmit}>
-              {/* Brand */}
-              <label className="block mb-2">Brand</label>
+              <label className="block mb-2 font-medium">Brand</label>
               <select
                 value={form.brand_id}
                 onChange={handleBrandChange}
-                className="w-full border px-3 py-2 rounded mb-4"
+                className="w-full border px-3 py-2 rounded mb-3"
                 required
               >
                 <option value="">Select Brand</option>
@@ -266,28 +353,24 @@ export default function PurchaseOrders() {
                 ))}
               </select>
 
-              {/* Order Number */}
-              <label className="block mb-2">Order Number</label>
+              <label className="block mb-2 font-medium">Order Number</label>
               <input
                 type="text"
                 value={form.order_number}
                 onChange={(e) => setForm({ ...form, order_number: e.target.value })}
-                className="w-full border px-3 py-2 rounded mb-4"
+                className="w-full border px-3 py-2 rounded mb-3"
                 required
               />
 
-              {/* Items */}
               <h4 className="font-semibold mb-2">Items</h4>
               {form.items.map((item, idx) => (
-                <div key={idx} className="flex gap-2 mb-2 border p-2 rounded items-center flex-wrap">
-                  {/* Tyre select / input */}
+                <div key={idx} className="flex gap-2 mb-2 border p-2 rounded flex-wrap">
                   <input
                     list="tyres"
                     value={item.tyre_name}
                     onChange={(e) => {
                       const val = e.target.value;
                       handleItemChange(idx, "tyre_name", val);
-
                       const selectedTyre = tyres.find((t) => t.tyre_number === val);
                       if (selectedTyre) {
                         handleItemChange(idx, "tyre_id", selectedTyre.id);
@@ -308,7 +391,6 @@ export default function PurchaseOrders() {
                     ))}
                   </datalist>
 
-                  {/* Type dropdown */}
                   <select
                     value={item.typeId}
                     onChange={(e) => handleItemChange(idx, "typeId", e.target.value)}
@@ -322,7 +404,6 @@ export default function PurchaseOrders() {
                     ))}
                   </select>
 
-                  {/* Quantity */}
                   <input
                     type="number"
                     min="1"
@@ -332,7 +413,6 @@ export default function PurchaseOrders() {
                     required
                   />
 
-                  {/* Price */}
                   <input
                     type="number"
                     min="0"
@@ -343,7 +423,6 @@ export default function PurchaseOrders() {
                     required
                   />
 
-                  {/* Tubeless */}
                   <label className="flex items-center space-x-1">
                     <input
                       type="checkbox"
@@ -354,7 +433,6 @@ export default function PurchaseOrders() {
                     <span>Tubeless</span>
                   </label>
 
-                  {/* Remove button */}
                   <button
                     type="button"
                     onClick={() => handleRemoveItem(idx)}
@@ -370,11 +448,10 @@ export default function PurchaseOrders() {
                 onClick={handleAddItem}
                 className="bg-green-600 text-white px-4 py-2 rounded mt-2"
               >
-                <FaPlus /> Add Item
+                <FaPlus className="inline mr-2" /> Add Item
               </button>
 
-              {/* Status */}
-              <label className="block mt-4 mb-2">Status</label>
+              <label className="block mt-4 mb-2 font-medium">Status</label>
               <select
                 value={form.status}
                 onChange={(e) => setForm({ ...form, status: e.target.value })}
@@ -392,11 +469,8 @@ export default function PurchaseOrders() {
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="bg-blue-600 text-white px-4 py-2 rounded"
-                >
-                  {editing ? "Update" : "Create"}
+                <button type="submit" className="bg-[#162570] text-white px-4 py-2 rounded">
+                  {editing ? "Update" : "Save"}
                 </button>
               </div>
             </form>
