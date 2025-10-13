@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ENV from '../env';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
+import { LineChart, Line, XAxis, YAxis,
   Tooltip,
   ResponsiveContainer,
   PieChart,
@@ -17,12 +13,7 @@ import {
   CartesianGrid,
   Legend,
 } from "recharts";
-import {
-  FaUsers,
-  FaBox,
-  FaDollarSign,
-  FaUndo,
-} from "react-icons/fa";
+import { FaUsers, FaBox, FaDollarSign, FaUndo } from "react-icons/fa";
 
 export default function Dashboard() {
   // ---- Hardcoded data ----
@@ -116,15 +107,6 @@ export default function Dashboard() {
     (currentPageProd - 1) * rowsPerPage,
     currentPageProd * rowsPerPage
   );
-
-  const allBrands = [
-    { id: 1, name: "MRF", popularity: 99, sales: "99%" },
-    { id: 2, name: "CEAT", popularity: 82, sales: "82%" },
-    { id: 3, name: "YOKOMAHA", popularity: 75, sales: "75%" },
-    { id: 4, name: "Apollo", popularity: 72, sales: "72%" },
-    { id: 5, name: "JK Tyres", popularity: 69, sales: "69%" },
-  ];
-
   const [currentPageBrand, setCurrentPageBrand] = useState(1);
   const productsPerPageBrand = 5;
   const totalPages = Math.ceil(brands.length / productsPerPageBrand);
