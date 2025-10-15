@@ -14,6 +14,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, mobileOpen, setMo
     { name: "Types", icon: <FaTags />, path: "/types" },
     { name: "Sales Orders", icon: <FaThList />, path: "/salesorders" },
     { name: "Purchase Orders", icon: <FaShapes />, path: "/purchaseorders" },
+    { name: "Inventory Report", icon: <FaGripHorizontal />, path: "/inventory-report" },
   ];
 
   return (
