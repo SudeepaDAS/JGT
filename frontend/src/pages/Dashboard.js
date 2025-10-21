@@ -16,46 +16,43 @@ import { LineChart, Line, XAxis, YAxis,
 import { FaUsers, FaBox, FaDollarSign, FaUndo } from "react-icons/fa";
 
 export default function Dashboard() {
-  // ---- Hardcoded data ----
   const stats = [
-    {
-      title: "Total Users",
-      value: "89,935",
-      change: "+1.01% This week",
-      color: "bg-yellow-100",
-      icon: <FaUsers className="text-yellow-600" size={24} />,
-    },
-    {
-      title: "Total Products",
-      value: "23,283",
-      change: "+1.01% This week",
-      color: "bg-purple-100",
-      icon: <FaBox className="text-purple-600" size={24} />,
-    },
-    {
-      title: "Total Sales",
-      value: "46,827",
-      change: "-0.91% This week",
-      color: "bg-blue-100",
-      icon: <FaDollarSign className="text-blue-600" size={24} />,
-    },
-    {
-      title: "Total Refunded",
-      value: "$124,854",
-      change: "+1.01% This week",
-      color: "bg-pink-100",
-      icon: <FaUndo className="text-pink-600" size={24} />,
-    },
-  ];
+  {
+    title: "Total Products",
+    value: 200,
+    change: "", // Optional: Add change % if you track historical data
+    color: "bg-purple-100",
+    icon: <FaBox className="text-purple-600" size={24} />,
+  },
+  {
+    title: "Total Stock Value",
+    value: `₹280028`,
+    change: "",
+    color: "bg-blue-100",
+    icon: <FaBox className="text-blue-600" size={24} />,
+  },
+  {
+    title: "Total Sales This Month",
+    value: `₹101110`,
+    change: "",
+    color: "bg-green-100",
+    icon: <FaDollarSign className="text-green-600" size={24} />,
+  },
+  {
+    title: "Low Stock Items",
+    value: 10,
+    change: "",
+    color: "bg-red-100",
+    icon: <FaUndo className="text-red-600" size={24} />,
+  },
+];
 
   const ordersData = [
-    { month: "Jan", online: 20, offline: 25 },
-    { month: "Feb", online: 30, offline: 40 },
-    { month: "Mar", online: 60, offline: 55 },
-    { month: "Apr", online: 50, offline: 65 },
-    { month: "May", online: 70, offline: 60 },
-    { month: "Jun", online: 65, offline: 75 },
-    { month: "Jul", online: 85, offline: 80 },
+    { tyrename: "TYR-0001", stock_in: 20, stock_out: 25 },
+    { tyrename: "TYR-0002", stock_in: 30, stock_out: 40 },
+    { tyrename: "TYR-0003", stock_in: 60, stock_out: 55 },
+    { tyrename: "TYR-0004", stock_in: 50, stock_out: 65 },
+    { tyrename: "TYR-0005", stock_in: 70, stock_out: 60 },    
   ];
 
   const earningsData = [
@@ -114,6 +111,7 @@ export default function Dashboard() {
     (currentPageBrand - 1) * productsPerPageBrand,
     currentPageBrand * productsPerPageBrand
   );
+  const [selectedRange, setSelectedRange] = useState(new Date().getMonth() + 1);
   return (
     <div className="bg-white min-h-screen text-gray-800 p-4 space-y-4 rounded-2xl shadow-lg">
       {/* Top Stats */}
@@ -214,20 +212,43 @@ export default function Dashboard() {
 
       {/* Row 2 - Charts */}
       <div className="grid grid-cols-12 gap-4">
-        {/* Orders Analytics - col-span 6 */}
-        <div className="col-span-12 md:col-span-12 lg:col-span-6 bg-white p-2 rounded-xl shadow-lg flex flex-col items-center">
-          <h3 className="text-md font-bold mb-3 self-start">Orders Analytics</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={ordersData}>
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="offline" stroke="#FFBB28" strokeWidth={2} />
-              <Line type="monotone" dataKey="online" stroke="#0088FE" strokeWidth={2} />
-            </LineChart>
-          </ResponsiveContainer>
+        <div className="col-span-12 md:col-span-12 lg:col-span-6 bg-white p-4 rounded-xl shadow-lg flex flex-col">
+      <div className="flex justify-between items-center mb-3 w-full">
+        <h3 className="text-md font-bold text-gray-800">Product Analytics</h3>
+
+        <div className="flex items-center gap-3">
+          <select
+            value={selectedRange}
+            onChange={(e) => setSelectedRange(e.target.value)}
+            className="border border-gray-300 rounded-lg text-sm px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value={1}>January</option>
+            <option value={2}>February</option>
+            <option value={3}>March</option>
+            <option value={4}>April</option>
+            <option value={5}>May</option>
+            <option value={6}>June</option>
+            <option value={7}>July</option>
+            <option value={8}>August</option>
+            <option value={9}>September</option>
+            <option value={10}>October</option>
+            <option value={11}>November</option>
+            <option value={12}>December</option>
+          </select>
         </div>
+      </div>
+
+      <ResponsiveContainer width="100%" height={250}>
+        <LineChart data={ordersData}>
+          <XAxis dataKey="tyrename" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="stock_out" stroke="#FFBB28" strokeWidth={2} />
+          <Line type="monotone" dataKey="stock_in" stroke="#0088FE" strokeWidth={2} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
 
         {/* Earnings - col-span 2 */}
         <div className="col-span-12 md:col-span-6 lg:col-span-2 bg-white p-2 rounded-xl shadow-lg flex flex-col items-center">
