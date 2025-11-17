@@ -483,13 +483,19 @@ const fetchStockByCategory = async () => {
                   <Cell key={i} fill={COLORS[i % COLORS.length]} />
                 ))}
               </Pie>
+               <Tooltip 
+                  formatter={(value, name) => [
+                    `${value} units`,
+                    `${name} Stock`
+                  ]}
+                />
             </PieChart>
           </ResponsiveContainer>
         </div>
 
         {/* Category Breakdown */}
         <div className="bg-white p-4 rounded-xl shadow">
-          <h3 className="text-md font-bold mb-2">Tyre Categories</h3>
+          <h3 className="text-md font-bold mb-2">Stock by Type</h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={categoryData}>
               <CartesianGrid strokeDasharray="3 3" />
