@@ -262,7 +262,7 @@ export default function SalesOrders() {
                                 key={item.id}
                                 className="flex justify-between items-center bg-blue-50 text-blue-900 p-2 rounded-lg shadow-sm border"
                             >
-                                <p className="w-1/6 font-semibold">{item.Tyre.tyre_number}</p>
+                                <p className="w-1/6 font-semibold">{item.Tyre.tyre_number}{item.Tyre.model ? ` - ${item.Tyre.model}` : ''}</p>
                                 <p className="w-1/4 text-center font-semibold">Qty: {item.quantity}</p>
                                 <p className="w-1/4 text-right">Import Price: ₹{item.price}</p>
                                 <p className="w-1/4 text-right font-bold">Sale Price: ₹{item.total_price}</p>
@@ -322,7 +322,9 @@ export default function SalesOrders() {
                     >
                       <option value="">Select Tyre</option>
                       {tyres.map((t) => (
-                        <option key={t.id} value={t.id}>{t.tyre_number}</option>
+                        <option key={t.id} value={t.id}>
+                          {t.tyre_number}{t.model ? ` - ${t.model}` : ''}
+                        </option>
                       ))}
                     </select>
                     <input

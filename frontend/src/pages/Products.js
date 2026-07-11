@@ -9,6 +9,7 @@ export default function Products() {
     tyre_number: '',
     brandId: '',
     typeId: '',
+    model: '',
     price: '',
     quantity: '',
     tubeless: true
@@ -61,12 +62,13 @@ export default function Products() {
         tyre_number: form.tyre_number,
         brandId: form.brandId,
         typeId: form.typeId,
+        model: form.model,
         quantity: Number(form.quantity),
         price: Number(form.price),
         tubeless: form.tubeless
       };
       await axios.post(`${API}/tyres`, payload);
-      setForm({ tyre_number: '', brandId: '', typeId: '', quantity: '', price: '', tubeless: true });
+      setForm({ tyre_number: '', brandId: '', typeId: '', model: '', quantity: '', price: '', tubeless: true });
       setShowModal(false);
       fetchTyres();
     } catch (err) {
@@ -124,6 +126,7 @@ export default function Products() {
             <tr>
               <th className="px-4 py-3 text-left">Tyre Number</th>
               <th className="px-4 py-3 text-left">Brand</th>
+              <th className="px-4 py-3 text-left">Model</th>
               <th className="px-4 py-3 text-left">Type</th>
               <th className="px-4 py-3 text-left">Price</th>
               <th className="px-4 py-3 text-left">Stock</th>
@@ -141,6 +144,7 @@ export default function Products() {
               >
                 <td className="px-4 py-3 font-medium">{p.tyre_number}</td>
                 <td className="px-4 py-3">{p.Brand?.name}</td>
+                <td className="px-4 py-3">{p.model || '—'}</td>
                 <td className="px-4 py-3">{p.Type?.name}</td>
                 <td className="px-4 py-3 text-green-600 font-semibold">₹{p.price}</td>
                 <td className="px-4 py-3 font-medium">{p.quantity}</td>
@@ -175,6 +179,14 @@ export default function Products() {
                 value={form.tyre_number}
                 onChange={handleChange}
                 placeholder="Tyre Number"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-MidnightBlue"
+              />
+
+              <input
+                name="model"
+                value={form.model}
+                onChange={handleChange}
+                placeholder="Model (e.g. ALNAC 4G)"
                 className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-MidnightBlue"
               />
 

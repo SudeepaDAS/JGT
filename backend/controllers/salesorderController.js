@@ -7,7 +7,7 @@ exports.getAllOrders = async (req, res) => {
       include: [
         {
           model: SalesOrderItem,
-          include: [{ model: Tyre, attributes: ['tyre_number'] }],
+          include: [{ model: Tyre, attributes: ['tyre_number', 'model'] }],
         },
       ],
       order: [['order_date', 'DESC']],
@@ -26,7 +26,7 @@ exports.getOrderById = async (req, res) => {
       include: [
         {
           model: SalesOrderItem,
-          include: [{ model: Tyre, attributes: ['tyre_number', 'price', 'tubeless'] }],
+          include: [{ model: Tyre, attributes: ['tyre_number', 'price', 'tubeless', 'model'] }],
         },
       ],
     });

@@ -84,7 +84,7 @@ export default function PurchaseOrders() {
       ...form,
       items: [
         ...form.items,
-        { tyre_id: "", tyre_name: "", typeId: 0, qty: 1, price: 0, tubeless: true },
+        { tyre_id: "", tyre_name: "", model: "", typeId: 0, qty: 1, price: 0, tubeless: true },
       ],
     });
   };
@@ -134,6 +134,7 @@ export default function PurchaseOrders() {
       items: form.items.map((i) => ({
         tyre_id: i.tyre_id || null,
         tyre_name: i.tyre_name,
+        model: i.model || null,
         qty: Number(i.qty),
         import_price: Number(i.price),
         typeId: Number(i.typeId),
@@ -166,6 +167,7 @@ export default function PurchaseOrders() {
         id: i.id,
         tyre_id: i.Tyre?.id,
         tyre_name: i.Tyre?.tyre_number || i.tyre_name,
+        model: i.Tyre?.model || "",
         typeId: i.Tyre?.typeId || 0,
         qty: i.quantity,
         price: i.price,
@@ -295,7 +297,7 @@ export default function PurchaseOrders() {
                           className="flex justify-between items-center bg-blue-50 text-blue-900 p-2 rounded-lg shadow-sm border"
                         >
                           <p className="w-1/5 font-semibold">
-                            {item.Tyre?.tyre_number || item.tyre_name || "—"}
+                            {item.Tyre?.tyre_number || item.tyre_name || "—"}{item.Tyre?.model ? ` - ${item.Tyre.model}` : ''}
                           </p>
                           <p className="w-1/5 text-center font-semibold">
                             Type:{" "}
@@ -371,25 +373,40 @@ export default function PurchaseOrders() {
                     onChange={(e) => {
                       const val = e.target.value;
                       handleItemChange(idx, "tyre_name", val);
-                      const selectedTyre = tyres.find((t) => t.tyre_number === val);
+                      const selectedTyre = tyres.find(
+                        (t) => `${t.tyre_number}${t.model ? " - " + t.model : ""}` === val
+                      );
                       if (selectedTyre) {
                         handleItemChange(idx, "tyre_id", selectedTyre.id);
+                        handleItemChange(idx, "tyre_name", selectedTyre.tyre_number);
+                        handleItemChange(idx, "model", selectedTyre.model || "");
                         handleItemChange(idx, "typeId", selectedTyre.typeId);
                         handleItemChange(idx, "tubeless", selectedTyre.tubeless);
                         handleItemChange(idx, "price", selectedTyre.price);
                       } else {
                         handleItemChange(idx, "tyre_id", null);
-                        handleItemChange(idx, "typeId", 0);
                       }
                     }}
-                    placeholder="Select or type new tyre"
+                    placeholder="Select or type size"
                     className="border px-2 py-1 flex-1 rounded"
                   />
                   <datalist id="tyres">
                     {tyres.map((t) => (
-                      <option key={t.id} value={t.tyre_number} />
+                      <option
+                        key={t.id}
+                        value={`${t.tyre_number}${t.model ? " - " + t.model : ""}`}
+                      />
                     ))}
                   </datalist>
+
+                  <input
+                    type="text"
+                    value={item.model}
+                    onChange={(e) => handleItemChange(idx, "model", e.target.value)}
+                    placeholder="Model (e.g. ALNAC 4G)"
+                    className="w-40 border px-2 py-1 rounded"
+                    disabled={!!item.tyre_id}
+                  />
 
                   <select
                     value={item.typeId}
