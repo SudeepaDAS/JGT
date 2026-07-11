@@ -10,6 +10,7 @@ export default function Products() {
     tyre_number: '',
     brandId: '',
     typeId: '',
+    model: '',
     price: '',
     quantity: '',
     tubeless: true
@@ -62,12 +63,13 @@ export default function Products() {
         tyre_number: form.tyre_number,
         brandId: form.brandId,
         typeId: form.typeId,
+        model: form.model,
         quantity: Number(form.quantity),
         price: Number(form.price),
         tubeless: form.tubeless
       };
       await axios.post(`${API}/tyres`, payload);
-      setForm({ tyre_number: '', brandId: '', typeId: '', quantity: '', price: '', tubeless: true });
+      setForm({ tyre_number: '', brandId: '', typeId: '', model: '', quantity: '', price: '', tubeless: true });
       setShowModal(false);
       fetchTyres();
     } catch (err) {
@@ -114,17 +116,18 @@ export default function Products() {
           className="flex items-center gap-2 text-white bg-[#162570] border border-MidnightBlue px-5 py-2 rounded-lg shadow-md 
                     hover:bg-white-700 hover:text-MidnightBlue hover:scale-105 transition-all duration-200 font-medium px-4 py-2 rounded shadow"
         >
-        <FaPlus /> Add Product
+          <FaPlus /> Add Product
         </button>
 
       </div>
 
-     <div className="overflow-x-auto">
+      <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
           <thead className="bg-gray-100 text-white uppercase text-sm tracking-wider">
             <tr>
               <th className="px-4 py-3 border border-gray-300 text-left">Tyre Number</th>
               <th className="px-4 py-3 border border-gray-300 text-left">Brand</th>
+              <th className="px-4 py-3 border border-gray-300 text-left">Model</th>
               <th className="px-4 py-3 border border-gray-300 text-left">Type</th>
               <th className="px-4 py-3 border border-gray-300 text-left">Price</th>
               <th className="px-4 py-3 border border-gray-300 text-left">Stock</th>
@@ -136,12 +139,12 @@ export default function Products() {
             {products.map((p, idx) => (
               <tr
                 key={p.id}
-                className={`transition hover:bg-gray-100 ${
-                  idx % 2 === 0 ? 'bg-gray-50' : ''
-                }`}
+                className={`transition hover:bg-gray-100 ${idx % 2 === 0 ? 'bg-gray-50' : ''
+                  }`}
               >
                 <td className="px-4 py-3 border border-gray-300 font-medium">{p.tyre_number}</td>
                 <td className="px-4 py-3 border border-gray-300">{p.Brand?.name}</td>
+                <td className="px-4 py-3 border border-gray-300">{p.model || '—'}</td>
                 <td className="px-4 py-3 border border-gray-300">{p.Type?.name}</td>
                 <td className="px-4 py-3 border border-gray-300 text-green-600 font-semibold">₹{p.price}</td>
                 <td className="px-4 py-3 border border-gray-300 font-medium">{p.quantity}</td>
@@ -151,13 +154,13 @@ export default function Products() {
                     onClick={() => handleReduceStock(p)}
                     className="bg-yellow-400 text-white px-3 py-1 mx-1 rounded-md hover:bg-yellow-500 text-sm transition"
                   >
-                    <FaMinus/>
+                    <FaMinus />
                   </button>
                   <button
                     onClick={() => handleDelete(p.id)}
                     className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 text-sm transition"
                   >
-                    <FaTrash/>
+                    <FaTrash />
                   </button>
                 </td>
               </tr>
@@ -176,6 +179,14 @@ export default function Products() {
                 value={form.tyre_number}
                 onChange={handleChange}
                 placeholder="Tyre Number"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-MidnightBlue"
+              />
+
+              <input
+                name="model"
+                value={form.model}
+                onChange={handleChange}
+                placeholder="Model (e.g. ALNAC 4G)"
                 className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-MidnightBlue"
               />
 

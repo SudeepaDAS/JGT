@@ -26,7 +26,7 @@ exports.createPurchaseOrder = async (req, res) => {
 
     // Step 2: Process Items
     for (const item of items) {
-      const { tyre_id, tyre_name, qty, import_price, typeId, tubeless } = item;
+      const { tyre_id, tyre_name, qty, import_price, typeId, tubeless, model } = item;
 
       if (
         qty == null ||
@@ -48,6 +48,7 @@ exports.createPurchaseOrder = async (req, res) => {
           where: {
             tyre_number: tyre_name,
             brandId: brand_id,
+            model: model || null,
           },
           transaction: t,
         });
@@ -59,6 +60,7 @@ exports.createPurchaseOrder = async (req, res) => {
               tyre_number: tyre_name,
               brandId: brand_id,
               typeId,
+              model: model || null,
               quantity: status === 'Completed' ? qty : 0,
               price: import_price,
               tubeless: tubeless ?? true,
@@ -188,7 +190,11 @@ exports.updatePurchaseOrder = async (req, res) => {
       // Find or create tyre
       if (!tyreId && item.tyre_name) {
         let existingTyre = await Tyre.findOne({
-          where: { tyre_number: item.tyre_name, brandId: po.brand_id },
+          where: { 
+            tyre_number: item.tyre_name, 
+            brandId: po.brand_id,
+            model: item.model || null,
+          },
           transaction: t,
         });
 
@@ -200,6 +206,7 @@ exports.updatePurchaseOrder = async (req, res) => {
               tyre_number: item.tyre_name,
               brandId: po.brand_id,
               typeId,
+              model: item.model || null,
               quantity: statusChangedToCompleted ? item.qty : 0,
               price: item.import_price,
               tubeless: item.tubeless ?? true,
@@ -296,7 +303,7 @@ exports.getTyresByBrand = async (req, res) => {
     const brandId = req.params.brandId;
     const tyres = await Tyre.findAll({
       where: { brandId },
-      attributes: ['id', 'tyre_number', 'tubeless', 'typeId'],
+      attributes: ['id', 'tyre_number', 'tubeless', 'typeId', 'model'],
     });
     res.json(tyres);
   } catch (err) {

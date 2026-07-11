@@ -11,7 +11,10 @@ const Tyre = sequelize.define('Tyre', {
   tyre_number: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+  },
+  model: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
   brandId: {
     type: DataTypes.INTEGER,
