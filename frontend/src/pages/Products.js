@@ -6,6 +6,19 @@ import ENV from '../env';
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [appliedSearch, setAppliedSearch] = useState('');
+
+  const filteredProducts = products.filter((p) => {
+    if (!appliedSearch) return true;
+    const term = appliedSearch.toLowerCase();
+    return (
+      p.tyre_number?.toLowerCase().includes(term) ||
+      p.model?.toLowerCase().includes(term) ||
+      p.Brand?.name?.toLowerCase().includes(term) ||
+      p.Type?.name?.toLowerCase().includes(term)
+    );
+  });
   const [form, setForm] = useState({
     tyre_number: '',
     brandId: '',
@@ -118,7 +131,39 @@ export default function Products() {
         >
           <FaPlus /> Add Product
         </button>
+      </div>
 
+      {/* Search Bar */}
+      <div className="flex gap-2 mb-6 max-w-md">
+        <input
+          type="text"
+          placeholder="Search size, brand, or model..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              setAppliedSearch(searchQuery);
+            }
+          }}
+          className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#162570] bg-white shadow-sm"
+        />
+        <button
+          onClick={() => setAppliedSearch(searchQuery)}
+          className="text-white bg-[#162570] hover:bg-opacity-90 px-5 py-2 rounded-lg shadow-md transition font-medium"
+        >
+          Search
+        </button>
+        {appliedSearch && (
+          <button
+            onClick={() => {
+              setSearchQuery('');
+              setAppliedSearch('');
+            }}
+            className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition bg-white"
+          >
+            Clear
+          </button>
+        )}
       </div>
 
       <div className="overflow-x-auto">
@@ -136,7 +181,7 @@ export default function Products() {
             </tr>
           </thead>
           <tbody className="text-gray-700">
-            {products.map((p, idx) => (
+            {filteredProducts.map((p, idx) => (
               <tr
                 key={p.id}
                 className={`transition hover:bg-gray-100 ${idx % 2 === 0 ? 'bg-gray-50' : ''
